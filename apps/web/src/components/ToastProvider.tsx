@@ -1,0 +1,40 @@
+'use client';
+
+import { createContext, useContext, useState, ReactNode } from 'react';
+import { ToastContainer, useToast, ToastMessage } from './ProgressToast';
+
+interface ToastContextType {
+  showSuccess: (title: string, message?: string, duration?: number) => void;
+  showError: (title: string, message?: string, duration?: number) => void;
+  showInfo: (title: string, message?: string, duration?: number) => void;
+  showWarning: (title: string, message?: string, duration?: number) => void;
+}
+
+const ToastContext = createContext<ToastContextType | undefined>(undefined);
+
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const {
+    toasts,
+    addToast,
+    removeToast,
+    showSuccess,
+    showError,
+    showInfo,
+    showWarning,
+  } = useToast();
+
+  return (
+    <ToastContext.Provider value={{ showSuccess, showError, showInfo, showWarning }}>
+      {children}
+      <ToastContainer toasts={toasts} onClose={removeToast} />
+    </ToastContext.Provider>
+  );
+}
+
+export function useToastContext() {
+  const context = useContext(ToastContext);
+  if (context === undefined) {
+    throw new Error('useToastContext must be used within a ToastProvider');
+  }
+  return context;
+}
