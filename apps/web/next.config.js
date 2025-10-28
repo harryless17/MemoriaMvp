@@ -1,10 +1,5 @@
-import withPWA from 'next-pwa';
-
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const withPWA = require('next-pwa');
+const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -46,7 +41,7 @@ const nextConfig = {
   poweredByHeader: false,
 };
 
-export default withPWA({
+module.exports = withPWA({
   dest: 'public',
   register: true,
   skipWaiting: true,
