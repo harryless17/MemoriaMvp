@@ -75,7 +75,7 @@ export default function UserProfilePage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
-        <div className="container mx-auto px-4 pt-20 pb-8 md:pt-24 md:pb-12 max-w-4xl">
+        <div className="container mx-auto px-4 pt-28 pb-8 md:pt-32 md:pb-12 max-w-4xl">
           <div className="text-center py-16">
             <h1 className="text-2xl font-bold mb-4">Profil introuvable</h1>
             <p className="text-muted-foreground mb-8">Ce profil n'existe pas ou a été supprimé.</p>
@@ -100,7 +100,7 @@ export default function UserProfilePage() {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 dark:bg-pink-500 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
       </div>
 
-      <div className="relative container mx-auto px-4 pt-20 pb-8 md:pt-24 md:pb-12 max-w-4xl">
+      <div className="relative container mx-auto px-4 pt-28 pb-8 md:pt-32 md:pb-12 max-w-4xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Link href="/dashboard">

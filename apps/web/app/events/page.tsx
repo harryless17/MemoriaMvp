@@ -89,7 +89,7 @@ export default function MyEventsPage() {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 dark:bg-pink-500 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
       </div>
 
-      <div className="relative container mx-auto px-4 pt-20 sm:pt-24 md:pt-28 pb-8 md:pb-12 max-w-[1600px]">
+      <div className="relative container mx-auto px-4 pt-28 sm:pt-32 md:pt-36 pb-8 md:pb-12 max-w-[1600px]">
 
         {/* Filters with Glassmorphism */}
         <div className="flex gap-3 mb-8 md:mb-12 overflow-x-auto pb-2 scrollbar-hide">

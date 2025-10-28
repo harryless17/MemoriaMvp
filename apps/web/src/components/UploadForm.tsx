@@ -9,21 +9,51 @@ import { Input } from './ui/input';
 import { Select } from './ui/select';
 import { Upload, X } from 'lucide-react';
 import { getUserDisplayName } from '@/lib/userHelpers';
+import { useToastContext } from './ToastProvider';
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 const MAX_FILES = 20;
 
 export function UploadForm() {
   const router = useRouter();
+  const { showSuccess, showError, showInfo } = useToastContext();
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEventId, setSelectedEventId] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [currentFileIndex, setCurrentFileIndex] = useState(0);
+  const [uploadStartTime, setUploadStartTime] = useState<number | null>(null);
+  const [estimatedTimeRemaining, setEstimatedTimeRemaining] = useState<number | null>(null);
+  const [uploadSpeed, setUploadSpeed] = useState<number>(0);
 
   useEffect(() => {
     loadUserEvents();
   }, []);
+
+  // Timer calculation functions
+  const calculateUploadSpeed = (bytesUploaded: number, timeElapsed: number) => {
+    return bytesUploaded / (timeElapsed / 1000); // bytes per second
+  };
+
+  const calculateEstimatedTime = (totalBytes: number, bytesUploaded: number, speed: number) => {
+    if (speed === 0) return null;
+    const remainingBytes = totalBytes - bytesUploaded;
+    return remainingBytes / speed; // seconds
+  };
+
+  const formatTime = (seconds: number) => {
+    if (seconds < 60) return `${Math.round(seconds)}s`;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.round(seconds % 60);
+    return `${minutes}m ${remainingSeconds}s`;
+  };
+
+  const formatSpeed = (bytesPerSecond: number) => {
+    if (bytesPerSecond < 1024) return `${Math.round(bytesPerSecond)} B/s`;
+    if (bytesPerSecond < 1024 * 1024) return `${Math.round(bytesPerSecond / 1024)} KB/s`;
+    return `${Math.round(bytesPerSecond / (1024 * 1024))} MB/s`;
+  };
 
   async function loadUserEvents() {
     const {
@@ -108,13 +138,28 @@ export function UploadForm() {
 
     setUploading(true);
     setProgress(0);
+    setCurrentFileIndex(0);
+    setUploadStartTime(Date.now());
+    setEstimatedTimeRemaining(null);
+    setUploadSpeed(0);
+
+    showInfo('Upload démarré', `Début de l'upload de ${files.length} fichiers...`);
 
     try {
+      // Calculate total size for progress tracking
+      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+      let uploadedBytes = 0;
+      const startTime = Date.now();
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
+        setCurrentFileIndex(i + 1);
+        
         const fileExt = file.name.split('.').pop();
         const fileName = `${user.id}/${crypto.randomUUID()}.${fileExt}`;
         const type = file.type.startsWith('video/') ? 'video' : 'photo';
+
+        const fileStartTime = Date.now();
 
         // Upload file to Storage
         const { error: uploadError } = await supabase.storage
@@ -131,15 +176,32 @@ export function UploadForm() {
           storage_path: fileName,
         });
 
+        // Update progress and timers
+        uploadedBytes += file.size;
+        const currentTime = Date.now();
+        const timeElapsed = currentTime - startTime;
+        const fileTimeElapsed = currentTime - fileStartTime;
+        
+        // Calculate speed and estimated time
+        const speed = calculateUploadSpeed(uploadedBytes, timeElapsed);
+        setUploadSpeed(speed);
+        
+        const estimatedTime = calculateEstimatedTime(totalSize, uploadedBytes, speed);
+        setEstimatedTimeRemaining(estimatedTime);
+
         setProgress(Math.round(((i + 1) / files.length) * 100));
       }
 
+      showSuccess('Upload terminé', `${files.length} fichiers uploadés avec succès !`);
       router.push(`/e/${selectedEventId}`);
     } catch (error) {
       console.error('Error uploading:', error);
-      alert('Error uploading files. Please try again.');
+      showError('Échec de l\'upload', 'Erreur lors de l\'upload des fichiers. Veuillez réessayer.');
     } finally {
       setUploading(false);
+      setUploadStartTime(null);
+      setEstimatedTimeRemaining(null);
+      setUploadSpeed(0);
     }
   };
 
@@ -224,19 +286,49 @@ export function UploadForm() {
       )}
 
       {uploading && (
-        <div className="space-y-2">
-          <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+        <div className="space-y-4 p-4 bg-muted/50 rounded-lg border border-blue-200">
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium">
+              Upload du fichier {currentFileIndex} sur {files.length}
+            </span>
+            <span className="text-sm text-muted-foreground">{progress}%</span>
+          </div>
+          
+          <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
             <div
-              className="bg-primary h-full transition-all duration-300"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 h-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-sm text-center text-muted-foreground">Uploading... {progress}%</p>
+          
+          {/* Temps restant mis en évidence */}
+          {estimatedTimeRemaining && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center">
+              <div className="text-lg font-bold text-blue-700">
+                ⏱️ Temps restant: {formatTime(estimatedTimeRemaining)}
+              </div>
+              <div className="text-sm text-blue-600 mt-1">
+                Vous pouvez fermer cette page, l'upload continuera en arrière-plan
+              </div>
+            </div>
+          )}
+          
+          <div className="flex justify-between items-center text-xs text-muted-foreground">
+            <div className="flex items-center gap-4">
+              <span>Vitesse: {formatSpeed(uploadSpeed)}</span>
+              <span>Temps écoulé: {uploadStartTime ? Math.round((Date.now() - uploadStartTime) / 1000) : 0}s</span>
+            </div>
+            <div className="text-right">
+              <div className="text-xs text-gray-500">
+                {currentFileIndex > 0 && `${Math.round((currentFileIndex / files.length) * 100)}% des fichiers traités`}
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
       <Button type="submit" className="w-full" disabled={uploading || files.length === 0 || !selectedEventId}>
-        {uploading ? 'Uploading...' : 'Upload'}
+        {uploading ? 'Upload en cours...' : 'Uploader'}
       </Button>
     </form>
   );

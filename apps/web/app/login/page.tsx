@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye, EyeOff, Mail, Lock, Camera, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { Logo } from '@/components/Logo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -73,9 +74,16 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
 
-      <div className="container mx-auto px-4 pt-24 pb-12">
+      <div className="container mx-auto px-4 pt-32 sm:pt-36 pb-12">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
+            {/* Logo Memoria */}
+            <div className="flex justify-center mb-6">
+              <Logo 
+                className="w-24 h-24 rounded-2xl shadow-2xl shadow-blue-500/20"
+                alt="Memoria Logo"
+              />
+            </div>
             <h1 className="text-4xl font-black mb-4">
               <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 {isSignUp ? 'Créer un compte' : 'Connexion'}

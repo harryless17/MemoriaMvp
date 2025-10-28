@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { Dialog, DialogContent } from './ui/dialog';
 import { X, ChevronLeft, ChevronRight, Download, ZoomIn, ZoomOut } from 'lucide-react';
 import { Button } from './ui/button';
+import { useImageOptimization } from '@/hooks/useImageOptimization';
 
 interface MediaViewerProps {
   media: Media;
@@ -19,9 +20,11 @@ interface MediaViewerProps {
 export function MediaViewer({ media, allMedia, isOpen, onClose, onNavigate }: MediaViewerProps) {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [zoom, setZoom] = useState(1);
+  const { getFullSizeUrl } = useImageOptimization();
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const mediaUrl = getMediaUrl(media.storage_path, supabaseUrl);
+  const optimizedMediaUrl = getFullSizeUrl(mediaUrl);
 
   const currentIndex = allMedia.findIndex((m) => m.id === media.id);
   const hasPrev = currentIndex > 0;
@@ -53,6 +56,7 @@ export function MediaViewer({ media, allMedia, isOpen, onClose, onNavigate }: Me
 
   const handleDownload = async () => {
     try {
+      // Utiliser l'URL originale pour le téléchargement (qualité maximale)
       const response = await fetch(mediaUrl);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -159,14 +163,14 @@ export function MediaViewer({ media, allMedia, isOpen, onClose, onNavigate }: Me
             <div className="relative max-w-full max-h-full flex items-center justify-center p-12">
               {media.type === 'photo' ? (
                 <img
-                  src={mediaUrl}
+                  src={optimizedMediaUrl}
                   alt=""
                   className="max-w-full max-h-[80vh] object-contain"
                   style={{ transform: `scale(${zoom})`, transition: 'transform 0.2s' }}
                 />
               ) : (
                 <video
-                  src={mediaUrl}
+                  src={optimizedMediaUrl}
                   controls
                   autoPlay
                   className="max-w-full max-h-[80vh]"

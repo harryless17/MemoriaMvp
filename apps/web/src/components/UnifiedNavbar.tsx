@@ -11,6 +11,7 @@ import { Moon, Sun, LogOut, Menu, X, Calendar, Plus, ArrowLeft } from 'lucide-re
 import { useTheme } from 'next-themes';
 import type { Profile } from '@memoria/ui';
 import { getUserDisplayName } from '@/lib/userHelpers';
+import { Logo } from './Logo';
 
 interface UnifiedNavbarProps {
   showBackButton?: boolean;
@@ -98,7 +99,7 @@ export function UnifiedNavbar({
     <nav className="fixed top-2 sm:top-4 left-0 right-0 z-50 px-2 sm:px-4">
       <div className="container mx-auto max-w-[1600px]">
         <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-xl sm:rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/20">
-          <div className="flex h-14 sm:h-16 items-center justify-between px-3 sm:px-6">
+          <div className="flex h-20 sm:h-24 items-center justify-between px-3 sm:px-6">
             {/* Logo & Navigation */}
             <div className="flex items-center gap-6 sm:gap-8">
               {/* Memoria Logo */}
@@ -108,13 +109,12 @@ export function UnifiedNavbar({
               >
                 {/* Logo Image */}
                 <div className="relative">
-                  <img 
-                    src="/logo.png" 
-                    alt="Memoria Logo" 
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl group-hover:shadow-xl group-hover:shadow-blue-500/30 transition-all duration-500"
+                  <Logo 
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl group-hover:shadow-xl group-hover:shadow-blue-500/30 transition-all duration-500"
+                    alt="Memoria Logo"
                   />
                   {/* Glow effect */}
-                  <div className="absolute inset-0 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
                 </div>
               </Link>
               

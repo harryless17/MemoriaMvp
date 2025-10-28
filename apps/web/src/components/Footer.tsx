@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Heart, Github, Twitter } from 'lucide-react';
+import { Logo } from './Logo';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,7 +13,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-2xl font-bold gradient-text mb-4">Memoria</h3>
+            <div className="flex items-center gap-3 mb-4">
+              <Logo 
+                className="w-12 h-12 rounded-lg"
+                alt="Memoria Logo"
+              />
+              <h3 className="text-2xl font-bold gradient-text">Memoria</h3>
+            </div>
             <p className="text-muted-foreground mb-4 max-w-md">
               Capture and share your event moments with friends and family.
               Create lasting memories together.

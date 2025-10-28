@@ -44,10 +44,10 @@ export function EventCard({ event }: EventCardProps) {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Avatar
                 src={event.owner.avatar_url}
-                name={event.owner.display_name || event.owner.email || 'Anonyme'}
+                name={event.owner.display_name || 'Anonyme'}
                 size="sm"
               />
-              <span>Organisé par {event.owner.display_name || event.owner.email || 'Anonyme'}</span>
+              <span>Organisé par {event.owner.display_name || 'Anonyme'}</span>
             </div>
           </div>
         )}

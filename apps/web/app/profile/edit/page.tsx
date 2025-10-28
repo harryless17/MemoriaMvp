@@ -213,7 +213,7 @@ export default function EditProfilePage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 pt-20 pb-8 md:pt-24 md:pb-12 max-w-2xl">
+      <div className="container mx-auto px-4 pt-28 pb-8 md:pt-32 md:pb-12 max-w-2xl">
         <div className="flex items-center justify-center min-h-[60vh]">
           <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
         </div>
@@ -224,7 +224,7 @@ export default function EditProfilePage() {
   const currentAvatarUrl = avatarPreview || avatarUrl;
 
   return (
-    <div className="container mx-auto px-4 pt-20 pb-8 md:pt-24 md:pb-12 max-w-2xl">
+    <div className="container mx-auto px-4 pt-28 pb-8 md:pt-32 md:pb-12 max-w-2xl">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">

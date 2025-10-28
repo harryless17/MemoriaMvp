@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import FacePersonGrid from '@/components/FacePersonGrid';
+import OptimizedFacePersonGrid from '@/components/OptimizedFacePersonGrid';
 import { ClusterCardWithSuggestion } from './ClusterCardWithSuggestion';
 import AssignModalV2 from '@/components/AssignModalV2';
 import InviteModal from '@/components/InviteModal';
@@ -311,7 +311,7 @@ export function AITaggingView({ eventId, onStatsUpdate }: AITaggingViewProps) {
             Personnes déjà associées à des participants
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-            <FacePersonGrid
+            <OptimizedFacePersonGrid
               facePersons={linked}
               onAssign={(person) => {
                 setSelectedPerson(person);
@@ -322,6 +322,7 @@ export function AITaggingView({ eventId, onStatsUpdate }: AITaggingViewProps) {
                 setModalType('merge');
               }}
               onViewDetails={handleViewDetails}
+              gridSize="medium"
             />
           </div>
         </div>
@@ -429,16 +430,15 @@ export function AITaggingView({ eventId, onStatsUpdate }: AITaggingViewProps) {
           <p className="text-sm text-muted-foreground mb-4">
             Clusters masqués de l'analyse
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-            <FacePersonGrid
-              facePersons={ignored}
-              onMerge={(person) => {
-                setSelectedPerson(person);
-                setModalType('merge');
-              }}
-              onViewDetails={handleViewDetails}
-            />
-          </div>
+          <OptimizedFacePersonGrid
+            facePersons={ignored}
+            onMerge={(person) => {
+              setSelectedPerson(person);
+              setModalType('merge');
+            }}
+            onViewDetails={handleViewDetails}
+            gridSize="medium"
+          />
         </div>
       )}
 

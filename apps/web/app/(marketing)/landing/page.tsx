@@ -24,6 +24,7 @@ import {
   MessageCircle
 } from 'lucide-react';
 import { useState } from 'react';
+import { Logo } from '@/components/Logo';
 
 export default function LandingPage() {
   const [activeTab, setActiveTab] = useState<'photographer' | 'participant'>('photographer');
@@ -41,7 +42,7 @@ export default function LandingPage() {
 
       <div className="relative">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 pt-24 pb-20 text-center">
+        <section className="container mx-auto px-4 pt-32 sm:pt-36 pb-20 text-center">
           <div className="max-w-5xl mx-auto">
             
             {/* Badge */}
@@ -618,10 +619,9 @@ export default function LandingPage() {
 
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
               <div className="flex items-center gap-3">
-                <img 
-                  src="/logo.png" 
-                  alt="Memoria Logo" 
-                  className="w-8 h-8 rounded-lg"
+                <Logo 
+                  className="w-12 h-12 rounded-lg"
+                  alt="Memoria Logo"
                 />
                 <span className="font-bold">© 2025 Memoria. Tous droits réservés.</span>
               </div>

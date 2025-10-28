@@ -13,6 +13,9 @@ const MAX_RETRIES = 3;
 class UploadQueue {
   private queue: UploadQueueItem[] = [];
   private processing = false;
+  private startTime: number | null = null;
+  private totalSize = 0;
+  private uploadedBytes = 0;
 
   async initialize() {
     try {
@@ -72,10 +75,25 @@ class UploadQueue {
   async processQueue() {
     if (this.processing) return;
     this.processing = true;
+    this.startTime = Date.now();
+    this.uploadedBytes = 0;
 
     const pendingItems = this.queue.filter(
       (item) => item.status === 'pending' || item.status === 'failed'
     );
+
+    // Calculate total size for progress tracking
+    this.totalSize = 0;
+    for (const item of pendingItems) {
+      try {
+        const fileInfo = await FileSystem.getInfoAsync(item.uri);
+        if (fileInfo.exists) {
+          this.totalSize += fileInfo.size || 0;
+        }
+      } catch (error) {
+        console.error('Error getting file size:', error);
+      }
+    }
 
     for (const item of pendingItems) {
       try {
@@ -86,6 +104,9 @@ class UploadQueue {
     }
 
     this.processing = false;
+    this.startTime = null;
+    this.totalSize = 0;
+    this.uploadedBytes = 0;
   }
 
   private async uploadItem(item: UploadQueueItem) {
@@ -114,6 +135,17 @@ class UploadQueue {
       const fileExt = uriParts[uriParts.length - 1];
       const fileName = `${user.id}/${crypto.randomUUID()}.${fileExt}`;
 
+      // Update progress with file size tracking
+      const fileSize = fileInfo.size || 0;
+      this.uploadedBytes += fileSize;
+      
+      // Calculate overall progress
+      const overallProgress = this.totalSize > 0 
+        ? Math.round((this.uploadedBytes / this.totalSize) * 100)
+        : 0;
+
+      await this.updateItem(item.id, { progress: overallProgress });
+
       // Upload to storage
       const fileContent = await FileSystem.readAsStringAsync(item.uri, {
         encoding: FileSystem.EncodingType.Base64,
@@ -127,7 +159,7 @@ class UploadQueue {
 
       if (uploadError) throw uploadError;
 
-      await this.updateItem(item.id, { progress: 50 });
+      await this.updateItem(item.id, { progress: Math.min(overallProgress + 10, 90) });
 
       // Create media record
       const { error: dbError } = await supabase.from('media').insert({
@@ -157,6 +189,33 @@ class UploadQueue {
   getQueue() {
     return [...this.queue];
   }
+
+  getUploadStats() {
+    const pendingItems = this.queue.filter(
+      (item) => item.status === 'pending' || item.status === 'failed'
+    );
+    const completedItems = this.queue.filter(
+      (item) => item.status === 'completed'
+    );
+
+    const elapsedTime = this.startTime ? (Date.now() - this.startTime) / 1000 : 0;
+    const uploadSpeed = elapsedTime > 0 && this.uploadedBytes > 0 
+      ? this.uploadedBytes / elapsedTime 
+      : 0;
+
+    return {
+      totalItems: this.queue.length,
+      pendingItems: pendingItems.length,
+      completedItems: completedItems.length,
+      isProcessing: this.processing,
+      elapsedTime,
+      uploadSpeed,
+      totalSize: this.totalSize,
+      uploadedBytes: this.uploadedBytes,
+      progress: this.totalSize > 0 ? Math.round((this.uploadedBytes / this.totalSize) * 100) : 0
+    };
+  }
+
 }
 
 // Helper to decode base64

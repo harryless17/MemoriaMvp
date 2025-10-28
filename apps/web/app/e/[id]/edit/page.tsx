@@ -145,7 +145,7 @@ export default function EditEventPage() {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 dark:bg-pink-500 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
       </div>
 
-      <div className="relative container mx-auto px-4 pt-20 sm:pt-24 md:pt-28 pb-8 md:pb-12 max-w-2xl">
+      <div className="relative container mx-auto px-4 pt-28 sm:pt-32 md:pt-36 pb-8 md:pb-12 max-w-2xl">
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
           <Link href={`/e/${eventId}`}>

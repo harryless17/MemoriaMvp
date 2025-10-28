@@ -13,6 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabaseClient';
 import type { Event } from '@memoria/ui';
 import { uploadQueue } from '@/features/upload/queue';
+import { UploadProgress } from '@/components/UploadProgress';
 import { Ionicons } from '@expo/vector-icons';
 
 const MAX_FILES = 20;
@@ -144,6 +145,10 @@ export default function UploadScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Upload Progress */}
+      <UploadProgress />
+      
+      
       <View style={styles.form}>
         <View style={styles.field}>
           <Text style={styles.label}>Select Event</Text>

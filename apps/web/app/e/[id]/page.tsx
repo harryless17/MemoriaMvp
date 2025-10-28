@@ -46,7 +46,7 @@ function formatDate(dateString: string): string {
     day: 'numeric' 
   });
 }
-import { MediaGrid } from '@/components/MediaGrid';
+import { OptimizedMediaGrid } from '@/components/OptimizedMediaGrid';
 import { Button } from '@/components/ui/button';
 import { MembersList } from '@/components/MembersList';
 import { InviteMembersDialog } from '@/components/InviteMembersDialog';
@@ -377,7 +377,7 @@ export default function EventDetailPage() {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 dark:bg-pink-500 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
       </div>
 
-      <div className="relative container mx-auto px-4 pt-20 sm:pt-24 md:pt-28 pb-8 md:pb-12 max-w-[1600px]">
+      <div className="relative container mx-auto px-4 pt-28 sm:pt-32 md:pt-36 pb-8 md:pb-12 max-w-[1600px]">
       {/* Event Health Card - Only for organizers */}
       {isOrganizer && (
         <div className="mb-6 space-y-4">
@@ -739,6 +739,7 @@ export default function EventDetailPage() {
             )}
           </div>
 
+
           {/* Media section */}
           <div>
             <h2 className="text-lg md:text-xl font-semibold mb-3">
@@ -750,7 +751,12 @@ export default function EventDetailPage() {
               )}
             </h2>
             {media.length > 0 ? (
-              <MediaGrid media={media} onMediaDeleted={loadEvent} />
+              <OptimizedMediaGrid 
+                media={media} 
+                onMediaDeleted={loadEvent}
+                gridSize="medium"
+                showDownloadButton={true}
+              />
             ) : (
               <div className="text-center py-8 bg-muted/30 rounded-lg">
                 <p className="text-muted-foreground text-sm">Aucune photo pour le moment</p>
@@ -771,7 +777,7 @@ export default function EventDetailPage() {
         <div>
           <h2 className="text-lg md:text-xl font-semibold mb-3">Vos photos ({media.length})</h2>
           {media.length > 0 ? (
-            <MediaGrid media={media} onMediaDeleted={loadEvent} />
+            <OptimizedMediaGrid media={media} onMediaDeleted={loadEvent} />
           ) : (
             <div className="relative overflow-hidden">
               {/* Glassmorphism card */}

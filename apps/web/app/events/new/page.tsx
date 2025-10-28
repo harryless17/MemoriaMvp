@@ -102,7 +102,7 @@ export default function NewEventPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 pt-20 sm:pt-24 md:pt-28 pb-8 md:pb-12 max-w-2xl">
+    <div className="container mx-auto px-4 pt-28 sm:pt-32 md:pt-36 pb-8 md:pb-12 max-w-2xl">
       <Link href="/events">
         <Button variant="ghost" size="sm" className="mb-4">
           <ArrowLeft className="w-4 h-4 mr-2" />

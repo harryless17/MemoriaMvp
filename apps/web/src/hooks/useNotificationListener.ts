@@ -139,10 +139,15 @@ export async function requestNotificationPermission() {
  */
 export function showBrowserNotification(title: string, body: string, icon?: string) {
   if ('Notification' in window && Notification.permission === 'granted') {
+    // Déterminer le logo selon le thème
+    const isDark = document.documentElement.classList.contains('dark') || 
+                   window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const logoSrc = isDark ? '/logo-dark.png' : '/logo-white.png';
+    
     new Notification(title, {
       body,
-      icon: icon || '/logo.png',
-      badge: '/logo.png',
+      icon: icon || logoSrc,
+      badge: logoSrc,
       tag: 'memoria-notification',
       requireInteraction: false,
     });

@@ -29,7 +29,7 @@ export default function UploadPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 pt-20 pb-8 md:pt-24 md:pb-12">
+      <div className="container mx-auto px-4 pt-28 pb-8 md:pt-32 md:pb-12">
         <div className="text-center">Loading...</div>
       </div>
     );
@@ -40,7 +40,7 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 pt-20 sm:pt-24 md:pt-28 pb-8 md:pb-12">
+    <div className="container mx-auto px-4 pt-28 sm:pt-32 md:pt-36 pb-8 md:pb-12">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-2xl md:text-3xl font-bold mb-6">Upload Media</h1>
         <UploadForm />

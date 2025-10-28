@@ -119,7 +119,7 @@ export default function PeoplePage() {
 
   if (!event) {
     return (
-      <div className="container mx-auto px-4 pt-24 pb-12">
+      <div className="container mx-auto px-4 pt-32 pb-12">
         <p className="text-center text-muted-foreground">Événement non trouvé</p>
       </div>
     );
@@ -138,7 +138,7 @@ export default function PeoplePage() {
         <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-300 dark:bg-blue-500 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
       </div>
 
-      <div className="relative container mx-auto px-4 pt-20 sm:pt-24 md:pt-28 pb-8 md:pb-12 max-w-[1600px]">
+      <div className="relative container mx-auto px-4 pt-28 sm:pt-32 md:pt-36 pb-8 md:pb-12 max-w-[1600px]">
         
         {/* Header */}
         <div className="mb-8">
