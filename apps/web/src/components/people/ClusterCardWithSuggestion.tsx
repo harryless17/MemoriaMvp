@@ -53,7 +53,7 @@ export function ClusterCardWithSuggestion({
         <div className="mt-2">
           <ClusterSuggestion
             cluster={cluster}
-            suggestion={suggestion}
+            suggestion={suggestion!}
             onAccept={onActionSuccess}
             onReject={() => {
               // Just hide, don't do anything else

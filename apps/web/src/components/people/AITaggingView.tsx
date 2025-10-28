@@ -489,7 +489,7 @@ export function AITaggingView({ eventId, onStatsUpdate }: AITaggingViewProps) {
           facePerson={selectedPerson}
           eventId={eventId}
           onClose={closeModal}
-          onInvited={handleActionSuccess}
+          onSuccess={handleActionSuccess}
         />
       )}
 
