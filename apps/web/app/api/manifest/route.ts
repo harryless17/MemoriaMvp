@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   // Récupérer le thème depuis les cookies ou les headers
   const theme = request.cookies.get('theme')?.value || 'light';
