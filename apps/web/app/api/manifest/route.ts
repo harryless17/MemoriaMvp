@@ -7,7 +7,8 @@ export async function GET(request: NextRequest) {
   const theme = request.cookies.get('theme')?.value || 'light';
   const isDark = theme === 'dark';
   
-  const logoSrc = isDark ? '/logo-dark.png' : '/logo-white.png';
+  // Utiliser un logo présent dans /public/icons
+  const logoSrc = '/icons/logo.png';
   
   const manifest = {
     name: "Memoria - Partagez vos moments d'événements",
@@ -27,83 +28,23 @@ export async function GET(request: NextRequest) {
         purpose: "any"
       },
       {
-        src: "/icons/favicon-96x96.png",
-        sizes: "96x96",
+        src: "/icons/apple-touch-icon.png",
+        sizes: "180x180",
         type: "image/png",
-        purpose: "any"
+        purpose: "apple-touch-icon"
       },
       {
         src: "/icons/web-app-manifest-192x192.png",
         sizes: "192x192",
-        type: "image/png",
-        purpose: "any"
+        type: "image/png"
       },
       {
         src: "/icons/web-app-manifest-512x512.png",
         sizes: "512x512",
-        type: "image/png",
-        purpose: "any maskable"
-      },
-      {
-        src: "/icons/apple-touch-icon.png",
-        sizes: "180x180",
-        type: "image/png",
-        purpose: "any"
-      }
-    ],
-    categories: ["photo", "social", "lifestyle"],
-    shortcuts: [
-      {
-        name: "Upload Media",
-        short_name: "Upload",
-        description: "Upload photos or videos",
-        url: "/upload",
-        icons: [
-          {
-            src: "/icons/favicon-96x96.png",
-            sizes: "96x96"
-          }
-        ]
-      },
-      {
-        name: "Create Event",
-        short_name: "New Event",
-        description: "Create a new event",
-        url: "/events/new",
-        icons: [
-          {
-            src: "/icons/favicon-96x96.png",
-            sizes: "96x96"
-          }
-        ]
-      },
-      {
-        name: "My Events",
-        short_name: "Events",
-        description: "View your events",
-        url: "/my-events",
-        icons: [
-          {
-            src: "/icons/favicon-96x96.png",
-            sizes: "96x96"
-          }
-        ]
-      }
-    ],
-    screenshots: [
-      {
-        src: "/screenshots/home.png",
-        sizes: "1170x2532",
-        type: "image/png",
-        form_factor: "narrow"
+        type: "image/png"
       }
     ]
   };
 
-  return NextResponse.json(manifest, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
-    },
-  });
+  return NextResponse.json(manifest);
 }
