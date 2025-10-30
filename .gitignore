@@ -75,7 +75,7 @@ dist
 
 # Gatsby files
 .cache/
-public
+# public  # Commented out to allow Next.js public files
 
 # Storybook build outputs
 .out
@@ -144,3 +144,4 @@ coverage/
 # Misc
 *.tgz
 *.tar.gz
+.vercel
