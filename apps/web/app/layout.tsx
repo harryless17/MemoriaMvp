@@ -39,12 +39,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icons/logo.png', sizes: 'any', type: 'image/png' },
+      { url: '/logo-white.png', sizes: 'any', type: 'image/png' },
       { url: '/icons/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
       { url: '/icons/web-app-manifest-192x192.png', sizes: '192x192', type: 'image/png' },
       { url: '/icons/web-app-manifest-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
+      { url: '/logo-white.png', sizes: '180x180', type: 'image/png' },
       { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
     shortcut: [
@@ -54,14 +55,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Memoria - Partagez vos moments d\'événements',
     description: 'Capturez et partagez photos et vidéos d\'événements avec vos proches. IA de reconnaissance faciale incluse.',
-    images: ['/icons/logo.png'],
+    images: ['/logo-white.png'],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Memoria - Partagez vos moments d\'événements',
     description: 'Capturez et partagez photos et vidéos d\'événements avec vos proches. IA de reconnaissance faciale incluse.',
-    images: ['/icons/logo.png'],
+    images: ['/logo-white.png'],
   },
 };
 
